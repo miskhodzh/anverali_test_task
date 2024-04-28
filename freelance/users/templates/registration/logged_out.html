@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+{% load i18n %}
+
+{% block content %}
+
+<p>Спасибо, что уделили этому веб-сайту немного времени. <a href="{% url 'users:login' %}">Войдите в систему еще раз</a></p>
+
+
+{% endblock %}
