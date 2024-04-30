@@ -20,7 +20,12 @@ def create_project(request):
             return redirect('publications:index')  # Перенаправляем на страницу со списком статей
     else:
         form = ProjectForm()
-    return render(request, template, {'form': form})
+    
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
 
 
 @login_required
@@ -30,7 +35,7 @@ def publications(request):
     # for project in projects:
     #     project.user = User.objects.get(id=project.customer)
     context = {
-        'projects': projects
+        'projects': projects,
     }
     return render(request, template, context)
 

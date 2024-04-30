@@ -1,0 +1,25 @@
+{% extends "publications/base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5" style="color: white;">Список Исполнителей</h1>
+    <div class="row mt-4 overflow-auto">
+
+        {% comment %} {% for project in projects %} {% endcomment %}
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{request.user.username}}</h5>
+                    <p class="card-text"><strong>На платформе с : </strong>23.23.2024</p>
+                    <p class="card-text"><strong>Проведенные сделки:</strong> 1234
+                    </p>
+                    <p class="card-text"><strong>Рейтинг:</strong> 4.9</p>
+                </div>
+            </div>
+        </div>
+        {% comment %} {% endfor %} {% endcomment %}
+    </div>
+</div>
+{% endblock content %}
+{% bootstrap_javascript %}

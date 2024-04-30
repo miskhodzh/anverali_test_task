@@ -1,10 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 
+from users.models import User
+
 from django.contrib.auth import views
 from django.urls import path, reverse_lazy
 
-from .views import profile
+from .views import profile, executors, CustomUserCreateView
+from .forms import UserRegistrationForm
 
 app_name = 'users'
 
@@ -65,10 +68,11 @@ urlpatterns = [
     # Регистрация
     path(
         'registration/', 
-        CreateView.as_view(
+        CustomUserCreateView.as_view(
             template_name='registration/registration_form.html',
-            form_class=UserCreationForm,
+            form_class=UserRegistrationForm,
             success_url=reverse_lazy('users:login'),
+            model = User,
         ),
         name='registration',
     ),
@@ -79,4 +83,11 @@ urlpatterns = [
         profile,
         name='profile'
     ),
+
+    # Список исполнителей
+    path(
+        'executors/',
+        executors,
+        name='executors'
+    )
 ] 

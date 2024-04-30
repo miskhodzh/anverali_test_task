@@ -1,5 +1,6 @@
-{% extends "base.html" %}
+{% extends "publications/base.html" %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block content %}
 
@@ -8,16 +9,34 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
+        {% if user.groups.all.0 == "Customers" %}
+          <h1>Кабинет заказчика</h1>
+          {% elif user.groups.all.0 == "Executors" %}
+          <h1>Кабинет исполнителя</h1>
+        {% endif %}
+        
         <div class="card-body">
-          <h5 class="card-title text-center">Информация о профиле</h5>
           <!-- Информация о профиле -->
+          <div class="text-center mb-3">
+            <img class="form-label" src="{% static "img/ava.png" %}" style="border-radius:50%; width: 250px; height: 250px;" alt="Avatar">
+          </div>
           <div class="mb-3">
-            <label for="fullName" class="form-label">Имя пользователя:</label>
-            <p class="form-control-static">{{ request.user.username }}</p>
+            <label for="fullName" class="form-label">Имя пользователя: {{ request.user.username }}</label>
+          </div>
+          <div class="mb-3">
+            <label for="dealCount" class="form-label">Количество проведенных сделок:</label>
+            <!-- Замените 'deal_count' на переменную, содержащую количество проведенных сделок -->
+            <p class="form-control-static">{{ deal_count }}</p>
+          </div>
+          <div class="mb-3">
+            <label for="rating" class="form-label">Рейтинг:</label>
+            <!-- Замените 'rating' на переменную, содержащую рейтинг пользователя -->
+            <p class="form-control-static">{{ user_rating }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock content %}
