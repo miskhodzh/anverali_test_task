@@ -1,0 +1,29 @@
+{% extends "publications/base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% block content %}
+<div class="container">
+    <div class="row mt-4 overflow-auto">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <h2>Проверьте данные прежде чем удалить проект</h2>
+
+                <div class="card-body ">
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Завершить до: {{ project.deadline|date:'d.m.Y' }}</li>
+                        <li class="list-group-item">Статус {{ project.status }}</li>
+                        <li class="list-group-item"><p>{{ project.description }}</p></li>
+                    </ul>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                    <a href="{% url "publications:publication" project.id %}" class="card-link">Отмена</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% bootstrap_javascript %}

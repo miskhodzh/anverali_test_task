@@ -1,0 +1,30 @@
+{% extends "publications/base.html" %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+{% block content %}
+<div class="container bg-secondary">
+    <div class="row">
+        <div class="card col-3 profile-info mx-auto">
+            <img src="{% static "img/ava.png" %}" style="width: 250px; height: 250px; border-radius: 50%;" class='mx-auto'>
+            <div class="card-body ">
+                <h5 class="card-title">{{ user.username }}</h5>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Статус: 
+                        {% if user.groups.all.0.name == 'Customers' %}
+                            Заказчик 
+                        {% elif user.groups.all.0.name == 'Executors' %}
+                            Исполнитель
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">на платформе с {{ user.date_joined|date:'d.m.Y' }}</li>
+                    <li class="list-group-item">проведенных сделок: 120</li>
+                    <li class="list-group-item">Рейтинг: 4.9</li>
+                  </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% bootstrap_javascript %}

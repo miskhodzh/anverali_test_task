@@ -1,42 +1,71 @@
 {% extends "publications/base.html" %}
 {% load django_bootstrap5 %}
 {% load static %}
-
+{% bootstrap_css %}
 {% block content %}
-
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        {% if user.groups.all.0 == "Customers" %}
-          <h1>Кабинет заказчика</h1>
-          {% elif user.groups.all.0 == "Executors" %}
-          <h1>Кабинет исполнителя</h1>
-        {% endif %}
-        
-        <div class="card-body">
-          <!-- Информация о профиле -->
-          <div class="text-center mb-3">
-            <img class="form-label" src="{% static "img/ava.png" %}" style="border-radius:50%; width: 250px; height: 250px;" alt="Avatar">
-          </div>
-          <div class="mb-3">
-            <label for="fullName" class="form-label">Имя пользователя: {{ request.user.username }}</label>
-          </div>
-          <div class="mb-3">
-            <label for="dealCount" class="form-label">Количество проведенных сделок:</label>
-            <!-- Замените 'deal_count' на переменную, содержащую количество проведенных сделок -->
-            <p class="form-control-static">{{ deal_count }}</p>
-          </div>
-          <div class="mb-3">
-            <label for="rating" class="form-label">Рейтинг:</label>
-            <!-- Замените 'rating' на переменную, содержащую рейтинг пользователя -->
-            <p class="form-control-static">{{ user_rating }}</p>
-          </div>
+<div class="container bg-secondary">
+    <div class="row">
+        <div class="card col-3 profile-info sticky-top">
+            <img src="{% static "img/ava.png" %}" style="width: 250px; height: 250px; border-radius: 50%;">
+            <div class="card-body ">
+                <h5 class="card-title">{{ request.user.username }}</h5>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Статус: 
+                        {% if request.user.groups.all.0.name == 'Customers' %}
+                            Заказчик 
+                        {% elif request.user.groups.all.0.name == 'Executors' %}
+                            Исполнитель
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">на платформе с {{ request.user.date_joined|date:'d.m.Y' }}</li>
+                    <li class="list-group-item">проведенных сделок: 120</li>
+                    <li class="list-group-item">Рейтинг: 4.9</li>
+                    <a class="btn btn-primary" href="#">Настройки профиля</a>
+                    {% if request.user.groups.all.0.name == 'Customers' %}
+                        <a class="btn btn-success"  href="{% url "publications:add" %}">Добавить проект</a> 
+                    {% endif %}
+                  </ul>
+            </div>
         </div>
-      </div>
+        <div class="col-9">
+            <h1 class="col text-light" style="margin: 10px 0 30px 0;">Список проектов</h1>
+            <div class="container">
+                <div class="row gy-2">
+                {% if request.user.groups.all.0.name == 'Customers' %}
+                    {% for project in projects %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5><a href="{% url "publications:publication" project.id %}">{{project.title}}</a></h5>
+                                <p>{{project.description}}</p>
+                                <ul class="list-unstyled">
+                                    <li><h5>{{project.price}} ₽</h5></li>
+                                    <li>до {{project.deadline|date:'d.m.Y'}}</li>
+                                    <li class="text-{% if project.status == 'Open' %}success{% elif project.status == 'Progress' %}warning{% elif project.status == 'Closed' %}danger{% endif %}">Статус: {{ project.status }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% elif request.user.groups.all.0.name == 'Executors' %}
+                    {% for application in applications %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5><a href="{% url "publications:publication" application.project.id %}">{{application.project.title}}</a></h5>
+                                <p>{{application.project.description}}</p>
+                                <ul class="list-unstyled">
+                                    <li><h5>{{application.project.price}} ₽</h5></li>
+                                    <li>до {{application.project.deadline|date:'d.m.Y'}}</li>
+                                    <li class="text-{% if application.status == 'Accepted' %}success{% elif application.status == 'Pending' %}warning{% elif application.status == 'Rejected' %}danger{% endif %}">Статус: {{ application.status }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                </div>
+            </div>
+            
+        </div>
     </div>
-  </div>
 </div>
-
 {% endblock content %}
+{% bootstrap_javascript %}

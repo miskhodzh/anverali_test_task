@@ -31,6 +31,7 @@ class Project(models.Model):
     )
     STATUS_CHOICES = [
         ('Open', 'Открыт'),
+        ('Progress', 'В процессе'),
         ('Closed', 'Закрыт'),
     ]
     status = models.CharField(
@@ -40,26 +41,9 @@ class Project(models.Model):
         verbose_name='Статус'
     )
 
-
-class Application(models.Model):
-    project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE
-    )
-    executor = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-    date_pub = models.DateField(
-        auto_now_add=True
-    )
-    STATUS_CHOICES = [
-        ('Pending', 'В ожидании'),
-        ('Accepted', 'Принято'),
-        ('Rejected', 'Отклонено'),
-    ]
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default='Pending'
-    )
+    def get_fields(self):
+        return [
+            self.title,
+            self.description,
+            self.price,
+        ]

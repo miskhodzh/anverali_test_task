@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'publications.apps.PublicationsConfig',
+    'applications.apps.ApplicationsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,6 +120,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'publications:index'
+LOGIN_REDIRECT_URL = 'users:profile'
 
 AUTH_USER_MODEL = 'users.User'

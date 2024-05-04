@@ -6,19 +6,19 @@
     <h1 class="mt-5" style="color: white;">Список Исполнителей</h1>
     <div class="row mt-4 overflow-auto">
 
-        {% comment %} {% for project in projects %} {% endcomment %}
+        {% for executor in executors %}
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">{{request.user.username}}</h5>
-                    <p class="card-text"><strong>На платформе с : </strong>23.23.2024</p>
+                    <a href="{% url "users:user_info" executor.username %}"><h5 class="card-title">{{ executor }}</h5></a>
+                    <p class="card-text"><strong>На платформе с : </strong>{{ executor.date_joined|date:"d.m.Y" }}</p>
                     <p class="card-text"><strong>Проведенные сделки:</strong> 1234
                     </p>
                     <p class="card-text"><strong>Рейтинг:</strong> 4.9</p>
                 </div>
             </div>
         </div>
-        {% comment %} {% endfor %} {% endcomment %}
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}

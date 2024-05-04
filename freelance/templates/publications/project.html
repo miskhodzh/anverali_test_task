@@ -1,0 +1,58 @@
+{% extends "publications/base.html" %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% block content %}
+<div class="container">
+    <div class="row mt-4 overflow-auto">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{project.title}}</h5>
+                    <p class="card-text">{{project.description}}</p>
+                    <p class="card-text"><strong>Пользователь: </strong>{{project.customer}}</p>
+                    <p class="card-text"><strong>Выполнить до:</strong> {{ project.deadline|date:"d.m.Y" }}</p>
+                    <p class="card-text"><strong>Дата размещения:</strong> {{ project.pub_date|date:"d.m.Y" }}</p>
+                    <p class="card-text"><strong>Цена:</strong> {{project.price}}₽</p>
+                    {% if request.user.groups.all.0.name == 'Customers' %}
+                        <a class="btn btn-warning"  href="{% url "publications:publication_edit" project.id %}">Редактировать</a>
+                        <a class="btn btn-danger"  href="{% url "publications:publication_delete" project.id %}">Удалить</a>
+                    {% elif request.user.groups.all.0.name == 'Executors' %}
+                        <form action="{% url "applications:add" project.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning">Оставить заявку</button>
+                        </form>
+                    {% endif %}
+                    <a href="{% url "users:profile" %}">Назад</a>
+                </div>
+            </div>
+            {% for application in applications %}
+                <div class="col-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5><a href="{% url "users:user_info" application.executor.username %}">{{application.executor.username}}</a></h5>
+                            <p>На платформе с {{application.executor.date_joined|date:'d.m.Y'}}</p>
+                            <ul class="list-unstyled">
+                                <li>Количество выполенных сделок: 120</li>
+                                <li>Рейтинг: 4.9</li>
+                            </ul>
+                           {% if request.user.groups.all.0.name == 'Customers' %}
+                                {% if application.status == 'Pending' %}
+                                    <form action="{% url "applications:approve" application.id %}" method="post">
+                                    {% csrf_token %}
+                                        <button type="submit" class="btn btn-success">Одобрить</button>
+                                    </form>
+                                {% elif application.status == 'Rejected' %}
+                                    <h5 class='text-danger'>Откланенно</h5>
+                                {% else %}
+                                    <h5 class='text-success'>Одобренно</h5>
+                                {% endif %}
+                           {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% bootstrap_javascript %}

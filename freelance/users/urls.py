@@ -6,7 +6,7 @@ from users.models import User
 from django.contrib.auth import views
 from django.urls import path, reverse_lazy
 
-from .views import profile, executors, CustomUserCreateView
+from .views import profile, user_info, executors, CustomUserCreateView
 from .forms import UserRegistrationForm
 
 app_name = 'users'
@@ -89,5 +89,11 @@ urlpatterns = [
         'executors/',
         executors,
         name='executors'
-    )
+    ),
+
+    path(
+        'user/<str:username>/',
+        user_info,
+        name='user_info'
+    ),
 ] 
