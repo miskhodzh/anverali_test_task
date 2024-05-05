@@ -21,6 +21,7 @@
                     <li class="list-group-item">на платформе с {{ request.user.date_joined|date:'d.m.Y' }}</li>
                     <li class="list-group-item">проведенных сделок: {{ request.user.successful_projects }}</li>
                     <li class="list-group-item">Рейтинг: {{ request.user.rating }}</li>
+                    <li class="list-group-item">Почта: {{ request.user.email }}</li>
                     <a class="btn btn-primary" href="#">Настройки профиля</a>
                     {% if request.user.groups.all.0.name == 'Customers' %}
                         <a class="btn btn-success"  href="{% url "publications:add" %}">Добавить проект</a> 

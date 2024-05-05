@@ -26,6 +26,7 @@ class User(AbstractUser):
         return [
             self.id,
             self.username,
+            self.email,
             self.rating,
             self.successful_projects,
         ]
@@ -34,6 +35,7 @@ class User(AbstractUser):
         return [
             'id',
             'Имя пользователя',
+            'Почта',
             'Рейтинг',
             'Выполненные сделки',
         ]
