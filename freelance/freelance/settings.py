@@ -19,11 +19,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'users.apps.UsersConfig',
     'publications.apps.PublicationsConfig',
     'applications.apps.ApplicationsConfig',
-    'django.contrib.admin',
+    'users.apps.UsersConfig',
+    'admin_panel.apps.AdminPanelConfig',
     'django.contrib.auth',
+    'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -67,8 +68,11 @@ WSGI_APPLICATION = 'freelance.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'freelance',
+        'USER': 'postgres',
+        'PASSWORD': 'admin12345',
+        'HOST': 'localhost'
     }
 }
 

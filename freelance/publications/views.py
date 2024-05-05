@@ -1,14 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
 
 from .forms import ProjectForm
 from .models import Project
 
-from applications.forms import ApplicationForm
+from users.models import User
+
 from applications.models import Application
 
 @permission_required(perm='publications.add_project', raise_exception=True)
@@ -84,3 +82,27 @@ def publication(request, id):
         'applications': applications
     }
     return render(request, template, context)
+
+def publication_close(request, id):
+    project = Project.objects.get(id=id)
+    project.status = Project.STATUS_CHOICES[2][0]
+    project.save()
+
+    application = Application.objects.get(project_id=project.id, status=Application.STATUS_CHOICES[1][0])
+    application.status = Application.STATUS_CHOICES[3][0]
+    application.save()
+
+    executor = User.objects.get(id=application.executor.id)
+
+    executor.successful_projects = int(executor.successful_projects) + 1
+    executor.save()
+    try:
+        new_rating = int(request.POST['rating'])
+        current_rating = executor.rating
+        num_of_projects = executor.successful_projects
+        rating = (new_rating+current_rating)/num_of_projects
+        executor.rating = rating
+        executor.save()
+    except ValueError:
+        return redirect('publications:publication', id=id)
+    return redirect('publications:publication', id=id)

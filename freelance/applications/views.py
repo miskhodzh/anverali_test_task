@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 
-from .forms import ApplicationForm
 from .models import Application
 from publications.models import Project
-from users.models import User
 
 @permission_required(perm='applications.add_application', raise_exception=True)
 def create_application(request, id):
@@ -35,5 +33,9 @@ def approve_func(request, id):
 
     application.status = Application.STATUS_CHOICES[1][0]
     application.save()
+
+    project = Project.objects.get(id=application.project_id)
+    project.status = Project.STATUS_CHOICES[1][0]
+    project.save()
 
     return redirect('publications:publication', id=application.project_id)

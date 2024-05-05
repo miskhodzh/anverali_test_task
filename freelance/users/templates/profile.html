@@ -6,7 +6,7 @@
 <div class="container bg-secondary">
     <div class="row">
         <div class="card col-3 profile-info sticky-top">
-            <img src="{% static "img/ava.png" %}" style="width: 250px; height: 250px; border-radius: 50%;">
+            <img class='mx-auto' src="{% static "img/ava.png" %}" style="width: 250px; height: 250px; border-radius: 50%;">
             <div class="card-body ">
                 <h5 class="card-title">{{ request.user.username }}</h5>
                 <ul class="list-group">
@@ -19,8 +19,8 @@
                         {% endif %}
                     </li>
                     <li class="list-group-item">на платформе с {{ request.user.date_joined|date:'d.m.Y' }}</li>
-                    <li class="list-group-item">проведенных сделок: 120</li>
-                    <li class="list-group-item">Рейтинг: 4.9</li>
+                    <li class="list-group-item">проведенных сделок: {{ request.user.successful_projects }}</li>
+                    <li class="list-group-item">Рейтинг: {{ request.user.rating }}</li>
                     <a class="btn btn-primary" href="#">Настройки профиля</a>
                     {% if request.user.groups.all.0.name == 'Customers' %}
                         <a class="btn btn-success"  href="{% url "publications:add" %}">Добавить проект</a> 

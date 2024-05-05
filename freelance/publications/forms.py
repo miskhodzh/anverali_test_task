@@ -13,5 +13,10 @@ class ProjectForm(forms.ModelForm):
             'deadline',
             ]
         widgets = {
-            'deadline': forms.DateInput(attrs={'type': 'date', 'min': timezone.now().date()})
+            'deadline': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'min': timezone.now().date()
+                }
+            )
         }

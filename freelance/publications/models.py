@@ -43,7 +43,15 @@ class Project(models.Model):
 
     def get_fields(self):
         return [
+            self.id,
+            self.customer,
             self.title,
-            self.description,
             self.price,
+            self.description,
+            self.pub_date,
+            self.deadline,
+            self.status,
         ]
+    @classmethod
+    def get_verbose_names(cls):
+        return [field.verbose_name for field in cls._meta.fields]

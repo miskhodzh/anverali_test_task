@@ -18,9 +18,21 @@ class Application(models.Model):
         ('Pending', 'В ожидании'),
         ('Accepted', 'Принято'),
         ('Rejected', 'Отклонено'),
+        ('Successful', 'Успешно'),
     ]
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
         default='Pending'
     )
+    def get_fields(self):
+        return [
+            self.id,
+            self.project.title,
+            self.executor,
+            self.date_pub,
+            self.status,
+        ]
+    @classmethod
+    def get_verbose_names(cls):
+        return [field.verbose_name for field in cls._meta.fields]

@@ -10,6 +10,7 @@ from .models import User
 from publications.models import Project
 from applications.models import Application
 
+
 class CustomUserCreateView(CreateView):
     template_name = 'registration/registration_form.html'
     form_class = UserRegistrationForm
@@ -32,9 +33,9 @@ def profile(request):
 
     context = {}
     if group == 'Customers':
-        context['projects'] = Project.objects.filter(customer=user)
+        context['projects'] = Project.objects.filter(customer=user).order_by('-id')
     elif group == 'Executors':
-        applications = Application.objects.filter(executor=user)
+        applications = Application.objects.filter(executor=user).order_by('-id')
         context['applications'] = applications
 
     return render(request, template, context)

@@ -1,0 +1,36 @@
+{% load django_bootstrap5 %}
+{% load static %}
+{% bootstrap_css %}
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url "admin_panel:admin_get_objects" 'projects'%}">Проекты</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url "admin_panel:admin_get_objects" 'applications'%}">Заказы</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url "admin_panel:admin_get_objects" 'users'%}">Пользователи</a>
+  </li>
+</ul>
+
+<table class="table">
+  <thead>
+    <tr>
+      {% for header in headers %}
+        <th scope="col">{{header}}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+      {% for object in objects %}
+      <tr>
+        {% for row in object.get_fields %}
+          <td>{{row}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+{% bootstrap_javascript %}
